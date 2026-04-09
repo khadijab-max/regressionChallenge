@@ -417,7 +417,7 @@ Figure&nbsp;1: StressSurvey as a proxy for actual Stress levels
 <ol type="1">
 <li><strong>Bivariate Regression: Anxiety on StressSurvey.</strong> Run a bivariate regression of Anxiety on StressSurvey. What are the estimated coefficients? How do they compare to the true relationship?</li>
 </ol>
-<div id="a5a60a50" class="cell" data-execution_count="4">
+<div id="748bb5d4" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
 <pre><code>-1.524000000000001 1.0470000000000002</code></pre>
 </div>
@@ -428,7 +428,7 @@ Figure&nbsp;1: StressSurvey as a proxy for actual Stress levels
 <ol start="2" type="1">
 <li><strong>Visualization: StressSurvey vs Anxiety.</strong> Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety. Comment on the fit and any potential issues.</li>
 </ol>
-<div id="2af2f1ba" class="cell" data-execution_count="5">
+<div id="92d270b4" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -443,7 +443,7 @@ Figure&nbsp;1: StressSurvey as a proxy for actual Stress levels
 <ol start="3" type="1">
 <li><strong>Bivariate Regression: Anxiety on Time.</strong> Run a bivariate regression of Anxiety on Time. What are the estimated coefficients? How do they compare to the true relationship?</li>
 </ol>
-<div id="1b437ef0" class="cell" data-execution_count="6">
+<div id="c9f84701" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>(np.float64(-3.6801357186921675), np.float64(5.340592227020359))</code></pre>
 </div>
@@ -453,7 +453,7 @@ Figure&nbsp;1: StressSurvey as a proxy for actual Stress levels
 <ol start="4" type="1">
 <li><strong>Visualization: Time vs Anxiety.</strong> Create a scatter plot with the regression line showing the relationship between Time and Anxiety. Comment on the fit and any potential issues.</li>
 </ol>
-<div id="64a3f102" class="cell" data-execution_count="7">
+<div id="30421986" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -469,7 +469,7 @@ Figure&nbsp;1: StressSurvey as a proxy for actual Stress levels
 <ol start="5" type="1">
 <li><strong>Multiple Regression: StressSurvey + Time.</strong> Run a multiple regression of Anxiety on both <strong>StressSurvey</strong> and Time. What are the estimated coefficients? How do they compare to the true coefficients?</li>
 </ol>
-<div id="3a91576e" class="cell" data-execution_count="8">
+<div id="13501da9" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>const           0.588758
 StressSurvey    1.426926
@@ -486,7 +486,7 @@ dtype: float64</code></pre>
 <ol start="6" type="1">
 <li><strong>Multiple Regression: Stress + Time.</strong> Run a multiple regression of Anxiety on both <strong>Stress</strong> and Time. What are the estimated coefficients? How do they compare to the true relationship?</li>
 </ol>
-<div id="501b3011" class="cell" data-execution_count="9">
+<div id="5dbfa9c8" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>const     1.110223e-16
 Stress    1.000000e+00
@@ -563,7 +563,10 @@ dtype: float64</code></pre>
 </table>
 </div>
 </div>
-<p>Approach: To reduce misleading conclusions from Model 5 (Anxiety ~ StressSurvey + Time), I split the data into a subset where StressSurvey values are moderate to high (e.g., StressSurvey ≥ 5). This subset reflects the range where stress is actually driving anxiety and avoids including very low-stress observations where random noise dominates the regression. Reason for subset choice: Extreme low-stress cases distort the Time coefficient. Focusing on moderate/high stress isolates the true effect of Time when StressSurvey is relevant. Results: Regression on this subset produced coefficients closer to the true relationship (Time effect near +0.1, StressSurvey near 1). Coefficients were also statistically significant, unlike the original Model 5, where Time had a misleading negative effect. Takeaway: Splitting data into meaningful “statistical regimes” and using graphical checks for linearity improves interpretability. Blind reliance on full-sample regressions can produce statistically significant but misleading results, especially when predictors are correlated or the relationship is non-linear.</p>
+<p>To rescue the analysis from the distortions of the non-linear proxy, I partitioned the data into a High-Stress Regime (where StressSurvey <span class="math inline">\(\ge 9\)</span>).</p>
+<p>Why this subset? If we look at Figure 1, the relationship between Actual Stress and the Survey Response is a curve. However, at the “top end” of the scale (Stress 8 to 12), the survey measurement moves 1-for-1 with actual stress. By focusing on this locally linear regime, we strip away the mathematical “tension” that forced the Time coefficient to turn negative in the full model.</p>
+<p>The Results: In this subset, the coefficient for Time returns to a positive value (~0.15), much closer to the ground truth of 0.1.</p>
+<p>The Lesson: Global regressions assume a single “truth” applies to the whole dataset. When dealing with human proxies (like surveys), the relationship often changes across different levels of the variable. Professional analysts should use Scatterplot Smoothing (LOWESS) or Subsample Analysis to ensure their “Control Variables” aren’t actually “Corruption Variables.”</p>
 </section>
 </section>
 </section>

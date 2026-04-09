@@ -127,8 +127,6 @@ For every regression you run below, compare your estimated coefficients to these
 Are your estimates close? If not, your model is telling a wrong story -- even if R-squared is high and p-values are small.
 ::::
 
-### Questions for 75% Grade
-
 1. **Bivariate Regression: Anxiety on StressSurvey.** Run a bivariate regression of Anxiety on StressSurvey. What are the estimated coefficients? How do they compare to the true relationship?
 
 
@@ -262,8 +260,6 @@ Although the model appears statistically strong, the results are misleading: Str
 
 Even “controlling for” Time cannot fix the bias introduced by an imperfect proxy, highlighting the danger of blindly trusting regression coefficients.
 
-### Questions for 85% Grade
-
 6. **Multiple Regression: Stress + Time.** Run a multiple regression of Anxiety on both **Stress** and Time. What are the estimated coefficients? How do they compare to the true relationship?
 
 ```{python}
@@ -298,8 +294,6 @@ Model 6 (Stress + Time): Coefficients match the true relationship (Stress = 1, T
 
 Takeaway: High R² and small p-values do not guarantee a correct model. Using imperfect proxies or ignoring non-linearities can produce statistically significant but fundamentally wrong conclusions. Analysts must carefully examine variable selection and functional form.
 
-### Question for 95% Grade
-
 8. **Real-World Implications.** For each of the two multiple regression models, assume their outputs were published in academic journals and then picked up by the popular press. What headline about time spent on social media and its effect on anxiety would you expect from a press outlet covering the first model? What headline for the second model? Assuming confirmation bias is real, which model is a typical parent going to believe? Which model will Facebook, Instagram, and TikTok executives prefer?
 
 Model 5 (StressSurvey + Time):
@@ -315,8 +309,6 @@ Typical parents worried about social media are likely to believe Model 5, becaus
 Social media executives would prefer Model 5 as well, since it implies their platforms reduce anxiety, making for positive PR.
 
 Takeaway: Mis-specified models can lead to misleading press coverage and influence public perception and corporate interests, even when statistically “significant.”
-
-### Question for 100% Grade
 
 9. **Avoiding Misleading Statistical Significance.** Reflect on this tip: split the sample into meaningful subsets ("statistical regimes") and use graphical diagnostics for linearity rather than blind reliance on "canned" regressions. Apply this approach to the multiple regression of Anxiety on both StressSurvey and Time by analyzing a smartly chosen subset of the data. What specific subset did you choose and why? Did you get results that are both statistically significant and close to the true relationship?
 
