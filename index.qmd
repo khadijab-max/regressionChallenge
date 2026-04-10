@@ -257,22 +257,27 @@ This illustrates how confirmation bias shapes which results are accepted, regard
 9. **Avoiding Misleading Statistical Significance.** Reflect on this tip: split the sample into meaningful subsets ("statistical regimes") and use graphical diagnostics for linearity rather than blind reliance on "canned" regressions. Apply this approach to the multiple regression of Anxiety on both StressSurvey and Time by analyzing a smartly chosen subset of the data. What specific subset did you choose and why? Did you get results that are both statistically significant and close to the true relationship?
 
 ```{python}
+import pandas as pd
 import statsmodels.api as sm
+import warnings
+warnings.filterwarnings("ignore")
 
-# Step 1: Choose a meaningful subset (high-stress regime)
-# Reason: At higher StressSurvey levels, the proxy behaves more linearly and reduces distortion
+observDF = pd.DataFrame({
+    'Stress': [0, 0, 0, 1, 1, 1, 2, 2, 2, 8, 8, 8, 12, 12, 12],
+    'StressSurvey': [0, 0, 0, 3, 3, 3, 6, 6, 6, 9, 9, 9, 12, 12, 12],
+    'Time': [0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2.1, 2.2, 2.2, 2.2],
+    'Anxiety': [0, 0.1, 0.1, 1.1, 1.1, 1.1, 2.2, 2.2, 2.2,
+                8.2, 8.2, 8.21, 12.22, 12.22, 12.22]
+})
 
-subset = observDF[observDF['StressSurvey'] >= 9].copy()
+subset = observDF[observDF['StressSurvey'] >= 9]
 
-# Step 2: Define predictors and outcome
-X_sub = sm.add_constant(subset[['StressSurvey', 'Time']])
-y_sub = subset['Anxiety']
+X = sm.add_constant(subset[['StressSurvey', 'Time']])
+y = subset['Anxiety']
 
-# Step 3: Fit multiple regression
-model_sub = sm.OLS(y_sub, X_sub).fit()
+model = sm.OLS(y, X).fit()
 
-# Step 4: Display results
-print(model_sub.summary())
+print(model.summary())
 ```
 
 To address the distortion caused by non-linearity, I focus on a high-stress subset where StressSurvey ≥ 9. In this region, the proxy behaves more linearly relative to actual Stress, reducing the mismatch between the measured and true variable.
