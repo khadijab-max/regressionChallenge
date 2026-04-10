@@ -283,3 +283,4 @@ This improvement occurs because restricting the sample reduces non-linear distor
 
 This demonstrates that segmenting data into locally linear regimes can produce results that are both statistically meaningful and closer to the true relationship. Rather than relying solely on global regression models, analysts should use graphical diagnostics and subset analysis to ensure that linearity assumptions hold within the data.
 
+
