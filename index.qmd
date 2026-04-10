@@ -277,7 +277,7 @@ y = subset['Anxiety']
 
 model = sm.OLS(y, X).fit()
 
-print(model.summary())
+print(model.summary()).tables[1])
 ```
 
 To address the distortion caused by non-linearity, I focus on a high-stress subset where StressSurvey ≥ 9. In this region, the proxy behaves more linearly relative to actual Stress, reducing the mismatch between the measured and true variable.
