@@ -281,7 +281,7 @@ Figure&nbsp;1: StressSurvey as a proxy for actual Stress levels
 <ol type="1">
 <li><strong>Bivariate Regression: Anxiety on StressSurvey.</strong> Run a bivariate regression of Anxiety on StressSurvey. What are the estimated coefficients? How do they compare to the true relationship?</li>
 </ol>
-<div id="5d129c08" class="cell" data-execution_count="4">
+<div id="ed23171b" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
 <pre><code>-1.524000000000001 1.0470000000000002</code></pre>
 </div>
@@ -291,7 +291,7 @@ Figure&nbsp;1: StressSurvey as a proxy for actual Stress levels
 <ol start="2" type="1">
 <li><strong>Visualization: StressSurvey vs Anxiety.</strong> Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety. Comment on the fit and any potential issues.</li>
 </ol>
-<div id="5ba8dc80" class="cell" data-execution_count="5">
+<div id="98feb815" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -306,7 +306,7 @@ Figure&nbsp;1: StressSurvey as a proxy for actual Stress levels
 <ol start="3" type="1">
 <li><strong>Bivariate Regression: Anxiety on Time.</strong> Run a bivariate regression of Anxiety on Time. What are the estimated coefficients? How do they compare to the true relationship?</li>
 </ol>
-<div id="b4e83c2a" class="cell" data-execution_count="6">
+<div id="e2095f1e" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>(np.float64(-3.6801357186921675), np.float64(5.340592227020359))</code></pre>
 </div>
@@ -316,7 +316,7 @@ Figure&nbsp;1: StressSurvey as a proxy for actual Stress levels
 <ol start="4" type="1">
 <li><strong>Visualization: Time vs Anxiety.</strong> Create a scatter plot with the regression line showing the relationship between Time and Anxiety. Comment on the fit and any potential issues.</li>
 </ol>
-<div id="b35fe8c3" class="cell" data-execution_count="7">
+<div id="ab511020" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -334,7 +334,7 @@ Anxiety = Stress + 0.1 \times Time
 <ol start="5" type="1">
 <li><strong>Multiple Regression: StressSurvey + Time.</strong> Run a multiple regression of Anxiety on both <strong>StressSurvey</strong> and Time. What are the estimated coefficients? How do they compare to the true coefficients?</li>
 </ol>
-<div id="abea7b86" class="cell" data-execution_count="8">
+<div id="34ab122f" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>const           0.588758
 StressSurvey    1.426926
@@ -348,7 +348,7 @@ dtype: float64</code></pre>
 <ol start="6" type="1">
 <li><strong>Multiple Regression: Stress + Time.</strong> Run a multiple regression of Anxiety on both <strong>Stress</strong> and Time. What are the estimated coefficients? How do they compare to the true relationship?</li>
 </ol>
-<div id="3fad9476" class="cell" data-execution_count="9">
+<div id="5696843d" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>const     1.110223e-16
 Stress    1.000000e+00
@@ -376,144 +376,34 @@ dtype: float64</code></pre>
 <ol start="9" type="1">
 <li><strong>Avoiding Misleading Statistical Significance.</strong> Reflect on this tip: split the sample into meaningful subsets (“statistical regimes”) and use graphical diagnostics for linearity rather than blind reliance on “canned” regressions. Apply this approach to the multiple regression of Anxiety on both StressSurvey and Time by analyzing a smartly chosen subset of the data. What specific subset did you choose and why? Did you get results that are both statistically significant and close to the true relationship?</li>
 </ol>
-<div id="cell-q9-regime-split" class="cell" data-execution_count="10">
-<div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\khadi\OneDrive\Desktop\regressionChallenge\.venv\Lib\site-packages\statsmodels\stats\stattools.py:74: ValueWarning: omni_normtest is not valid with less than 8 observations; 6 samples were given.
-  warn("omni_normtest is not valid with less than 8 observations; %i "</code></pre>
-</div>
-<div id="q9-regime-split" class="cell-output cell-output-display" data-execution_count="10">
-<table class="simpletable caption-top table table-sm table-striped small">
-<caption>OLS Regression Results</caption>
-<tbody>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">Dep. Variable:</th>
-<td>Anxiety</td>
-<th data-quarto-table-cell-role="th">R-squared:</th>
-<td>1.000</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">Model:</th>
-<td>OLS</td>
-<th data-quarto-table-cell-role="th">Adj. R-squared:</th>
-<td>1.000</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">Method:</th>
-<td>Least Squares</td>
-<th data-quarto-table-cell-role="th">F-statistic:</th>
-<td>3.760e+28</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">Date:</th>
-<td>Fri, 10 Apr 2026</td>
-<th data-quarto-table-cell-role="th">Prob (F-statistic):</th>
-<td>2.52e-43</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">Time:</th>
-<td>12:46:51</td>
-<th data-quarto-table-cell-role="th">Log-Likelihood:</th>
-<td>183.48</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">No. Observations:</th>
-<td>6</td>
-<th data-quarto-table-cell-role="th">AIC:</th>
-<td>-361.0</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">Df Residuals:</th>
-<td>3</td>
-<th data-quarto-table-cell-role="th">BIC:</th>
-<td>-361.6</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">Df Model:</th>
-<td>2</td>
-<th data-quarto-table-cell-role="th"></th>
-<td></td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">Covariance Type:</th>
-<td>nonrobust</td>
-<th data-quarto-table-cell-role="th"></th>
-<td></td>
-</tr>
-</tbody>
-</table>
+<div id="7b3ca615" class="cell" data-execution_count="10">
+<div class="cell-output cell-output-stdout">
+<pre><code>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                Anxiety   R-squared:                       1.000
+Model:                            OLS   Adj. R-squared:                  1.000
+Method:                 Least Squares   F-statistic:                 3.760e+28
+Date:                Fri, 10 Apr 2026   Prob (F-statistic):           2.52e-43
+Time:                        13:16:03   Log-Likelihood:                 183.48
+No. Observations:                   6   AIC:                            -361.0
+Df Residuals:                       3   BIC:                            -361.6
+Df Model:                           2                                         
+Covariance Type:            nonrobust                                         
+================================================================================
+                   coef    std err          t      P&gt;|t|      [0.025      0.975]
+--------------------------------------------------------------------------------
+const           -4.0000   3.41e-13  -1.17e+13      0.000      -4.000      -4.000
+StressSurvey     1.3333   1.31e-14   1.01e+14      0.000       1.333       1.333
+Time             0.1000    2.2e-13   4.55e+11      0.000       0.100       0.100
+==============================================================================
+Omnibus:                          nan   Durbin-Watson:                   0.029
+Prob(Omnibus):                    nan   Jarque-Bera (JB):                1.062
+Skew:                           0.707   Prob(JB):                        0.588
+Kurtosis:                       1.500   Cond. No.                         600.
+==============================================================================
 
-
-<table class="simpletable caption-top table table-sm table-striped small">
-<tbody>
-<tr class="odd">
-<td></td>
-<th data-quarto-table-cell-role="th">coef</th>
-<th data-quarto-table-cell-role="th">std err</th>
-<th data-quarto-table-cell-role="th">t</th>
-<th data-quarto-table-cell-role="th">P&gt;|t|</th>
-<th data-quarto-table-cell-role="th">[0.025</th>
-<th data-quarto-table-cell-role="th">0.975]</th>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">const</th>
-<td>-4.0000</td>
-<td>3.41e-13</td>
-<td>-1.17e+13</td>
-<td>0.000</td>
-<td>-4.000</td>
-<td>-4.000</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">StressSurvey</th>
-<td>1.3333</td>
-<td>1.31e-14</td>
-<td>1.01e+14</td>
-<td>0.000</td>
-<td>1.333</td>
-<td>1.333</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">Time</th>
-<td>0.1000</td>
-<td>2.2e-13</td>
-<td>4.55e+11</td>
-<td>0.000</td>
-<td>0.100</td>
-<td>0.100</td>
-</tr>
-</tbody>
-</table>
-
-
-<table class="simpletable caption-top table table-sm table-striped small">
-<tbody>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">Omnibus:</th>
-<td>nan</td>
-<th data-quarto-table-cell-role="th">Durbin-Watson:</th>
-<td>0.029</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">Prob(Omnibus):</th>
-<td>nan</td>
-<th data-quarto-table-cell-role="th">Jarque-Bera (JB):</th>
-<td>1.062</td>
-</tr>
-<tr class="odd">
-<th data-quarto-table-cell-role="th">Skew:</th>
-<td>0.707</td>
-<th data-quarto-table-cell-role="th">Prob(JB):</th>
-<td>0.588</td>
-</tr>
-<tr class="even">
-<th data-quarto-table-cell-role="th">Kurtosis:</th>
-<td>1.500</td>
-<th data-quarto-table-cell-role="th">Cond. No.</th>
-<td>600.</td>
-</tr>
-</tbody>
-</table>
-<br><br>Notes:<br>[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</code></pre>
 </div>
 </div>
 <p>To address the distortion caused by non-linearity, I focus on a high-stress subset where StressSurvey ≥ 9. In this region, the proxy behaves more linearly relative to actual Stress, reducing the mismatch between the measured and true variable.</p>
