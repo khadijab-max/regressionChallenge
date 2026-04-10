@@ -257,22 +257,22 @@ This illustrates how confirmation bias shapes which results are accepted, regard
 9. **Avoiding Misleading Statistical Significance.** Reflect on this tip: split the sample into meaningful subsets ("statistical regimes") and use graphical diagnostics for linearity rather than blind reliance on "canned" regressions. Apply this approach to the multiple regression of Anxiety on both StressSurvey and Time by analyzing a smartly chosen subset of the data. What specific subset did you choose and why? Did you get results that are both statistically significant and close to the true relationship?
 
 ```{python}
-#| label: q9-regime-split
-#| echo: false
 import statsmodels.api as sm
 
-# Splitting the data into a 'High Stress' regime (StressSurvey >= 9)
+# Step 1: Choose a meaningful subset (high-stress regime)
+# Reason: At higher StressSurvey levels, the proxy behaves more linearly and reduces distortion
+
 subset = observDF[observDF['StressSurvey'] >= 9].copy()
 
-# Defining predictors and target
+# Step 2: Define predictors and outcome
 X_sub = sm.add_constant(subset[['StressSurvey', 'Time']])
 y_sub = subset['Anxiety']
 
-# Running multiple regression on subset
+# Step 3: Fit multiple regression
 model_sub = sm.OLS(y_sub, X_sub).fit()
 
-# Display results
-model_sub.summary()
+# Step 4: Display results
+print(model_sub.summary())
 ```
 
 To address the distortion caused by non-linearity, I focus on a high-stress subset where StressSurvey ≥ 9. In this region, the proxy behaves more linearly relative to actual Stress, reducing the mismatch between the measured and true variable.
