@@ -8,18 +8,9 @@ execute:
   eval: true
 ---
 
-## The Problem: When "Controlling For" Goes Wrong
+## Introduction
 
-> "We need to stop believing much of the empirical work we've been doing." - Christopher H. Achen
-
-**What does "control for" mean?** Imagine you're studying whether social media causes anxiety. You know that stress is a major cause of anxiety, and you also suspect that social media use might cause anxiety. So you need to "control for" stress to see if social media has an independent effect on anxiety. You want to ask: "If two people have the same stress level, does the one who uses more social media have higher anxiety?"
-
-Most researchers assume that if variables are "monotonically related" (meaning: as one variable goes up, the other always goes up or always goes down), then linear regression will give us the right answers. But here's the catch: **linearity is much stronger than monotonicity.**
-
-- **Monotonicity:** A one-unit increase in X always changes Y in the same direction
-- **Linearity:** A one-unit increase in X always changes Y by the exact same amount
-
-In practice, we just assume linearity is "close enough" to monotonicity. But what if it's not? Your challenge is to explore a simple example and show how even small non-linearities can make regression results completely wrong.
+This analysis examines how linear regression can produce misleading results when underlying relationships are non-linear. Using a dataset with a known true relationship, I evaluate how different model specifications affect interpretation, particularly when using proxy variables and “controlling for” additional factors.
 
 ### The True Relationship
 
@@ -110,9 +101,7 @@ coef = model.coef_[0]
 print(intercept, coef)
 ```
 
-The estimated intercept (-1.524) and slope (1.047) suggest a strong positive relationship. However, these estimates deviate meaningfully from the true data-generating process, indicating model misspecification. 
-
-However, these estimates do not match the true model, where anxiety depends on actual stress (coefficient = 1), time (0.1), and has an intercept of zero. Using StressSurvey as a proxy and omitting Time leads to bias, as the coefficient absorbs effects from both non-linearity and the missing variable.
+The estimated intercept (-1.524) and slope (1.047) suggest a strong positive relationship. However, these estimates deviate meaningfully from the true data-generating process, indicating model misspecification. Using StressSurvey as a proxy and omitting Time leads to bias, as the coefficient absorbs effects from both non-linearity and the missing variable.
 
 The negative intercept further indicates misspecification. Despite appearing strong, this regression provides a misleading interpretation of the true relationship. This demonstrates that even a strong statistical relationship can be misleading when the underlying variable is a non-linear proxy.
 
@@ -166,7 +155,7 @@ intercept_time, coef_time
 
 The regression of Anxiety on Time yields an intercept of -3.68 and a coefficient of 5.34. While it suggests a strong positive relationship, these estimates do not reflect the true model, where the coefficient on Time is only 0.1 and the intercept is zero.
 
-By omitting Stress, the regression inflates the apparent effect of Time, absorbing variation actually caused by stress. The negative intercept further highlights model misspecification. Thus, this bivariate model gives a misleading picture of social media’s impact on anxiety.Because Time is correlated with Stress, the model incorrectly attributes Stress-driven variation in Anxiety to Time, leading to a severely inflated coefficient
+By omitting Stress, the regression inflates the apparent effect of Time, absorbing variation actually caused by stress. The negative intercept further highlights model misspecification. Thus, this bivariate model gives a misleading picture of social media’s impact on anxiety. Because Time is correlated with Stress, the model incorrectly attributes Stress-driven variation in Anxiety to Time, leading to a severely inflated coefficient.
 
 4. **Visualization: Time vs Anxiety.** Create a scatter plot with the regression line showing the relationship between Time and Anxiety. Comment on the fit and any potential issues.
 
@@ -197,9 +186,11 @@ The scatter plot shows a clear misfit between the regression line and the data p
 Many points are far from the regression line, particularly at higher Anxiety values.
 This occurs because Time alone does not fully explain Anxiety; Stress is the primary driver.
 The slope is inflated and the intercept is strongly negative, both indicating that the bivariate model is misleading.
-Even though the line gives a trend, it fails to capture the true relationship 
+Even though the line gives a trend, it fails to capture the true relationship: 
 
-Anxiety=Stress+0.1×Time.
+$$
+Anxiety = Stress + 0.1 \times Time
+$$
 
 Key insight: This visualization demonstrates the danger of ignoring relevant control variables — a seemingly strong linear relationship can give completely wrong conclusions when non-linearity or omitted variables are present.
 
@@ -245,17 +236,15 @@ Using the true Stress variable eliminates bias and accurately recovers the under
 
 Key Insight:
 
-“With the correct variable, the regression tells the real story, unlike the misleading StressSurvey model, which distorted the effect of Time and over/underestimated Stress.”
+“Using the true Stress variable eliminates bias and accurately recovers the underlying data-generating process. In contrast, the StressSurvey model distorts both the magnitude and direction of effects.”
 
 7. **Model Comparison.** Compare the R-squared values and coefficient interpretations between the two multiple regression models (Questions 5 and 6). Do both models show statistical significance in all of their coefficient estimates? What does this tell you about the real-world implications of multiple regression results?
 
 Comparing the two multiple regression models:
 
-Both models have high R² and statistically significant coefficients.
-Model 5 (StressSurvey + Time): StressSurvey is overestimated and Time shows a large negative effect — clearly misleading.
-Model 6 (Stress + Time): Coefficients match the true relationship (Stress = 1, Time = 0.1) — accurate and interpretable.
+Both models produce high R² and statistically significant coefficients. However, only the model using Stress recovers the true relationship, while the StressSurvey model produces misleading estimates.
 
-Both models produce high R² and statistically significant coefficients, yet only one recovers the true relationship. This highlights that statistical significance does not imply correct model specification or causal validity
+This highlights that statistical significance does not imply correct model specification or causal validity.
 
 8. **Real-World Implications.** For each of the two multiple regression models, assume their outputs were published in academic journals and then picked up by the popular press. What headline about time spent on social media and its effect on anxiety would you expect from a press outlet covering the first model? What headline for the second model? Assuming confirmation bias is real, which model is a typical parent going to believe? Which model will Facebook, Instagram, and TikTok executives prefer?
 
