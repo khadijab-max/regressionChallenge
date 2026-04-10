@@ -79,7 +79,7 @@ plt.tight_layout()
 plt.show()
 ```
 
-## Analysis Tasks
+## Analysis
 
 1. **Bivariate Regression: Anxiety on StressSurvey.** Run a bivariate regression of Anxiety on StressSurvey. What are the estimated coefficients? How do they compare to the true relationship?
 
