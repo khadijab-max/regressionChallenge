@@ -4,25 +4,15 @@ subtitle: "Don't Trust Linear Models - The Perils of Non-Linearity"
 format:
   html: default
 execute:
-  echo: true
+  echo: false
   eval: true
 ---
-
-# Regression Challenge - Linear Model Interpretability
 
 ## The Problem: When "Controlling For" Goes Wrong
 
 > "We need to stop believing much of the empirical work we've been doing." - Christopher H. Achen
 
 **What does "control for" mean?** Imagine you're studying whether social media causes anxiety. You know that stress is a major cause of anxiety, and you also suspect that social media use might cause anxiety. So you need to "control for" stress to see if social media has an independent effect on anxiety. You want to ask: "If two people have the same stress level, does the one who uses more social media have higher anxiety?"
-
-:::: {.callout-important}
-## 🎯 The Key Insight: Non-Linearity Breaks Even "Good" Regressions
-
-**The problem:** Even when researchers carefully select control variables, non-linear relationships can make linear regression give completely wrong results.
-
-**Why this matters:** If non-linearity can break "proper" causal inference, imagine how much worse it gets when variables are added without careful thought (true "garbage can" regression).
-::::
 
 Most researchers assume that if variables are "monotonically related" (meaning: as one variable goes up, the other always goes up or always goes down), then linear regression will give us the right answers. But here's the catch: **linearity is much stronger than monotonicity.**
 
@@ -49,23 +39,17 @@ $$
 Anxiety = Stress + 0.1 \times Time
 $$
 
-:::: {.callout-important}
-## 🔍 The True Coefficients
-
 This equation implies specific values in the multiple regression framework $Anxiety = \beta_0 + \beta_1 \times Stress + \beta_2 \times Time + \epsilon$:
 
 - $\beta_0 = 0$ (intercept is zero)
 - $\beta_1 = 1$ (coefficient on Stress is 1)
 - $\beta_2 = 0.1$ (coefficient on Time is 0.1)
 
-When you run regression analysis, you're trying to estimate these $\beta$ coefficients. If your regression gives coefficients very different from these true values, **your model is wrong—even if it has good statistical fit!** Keep these values handy as you answer every question below.
-::::
-
 ## The Data
 
 ```{python}
 #| label: data-generation
-#| echo: true
+#| echo: false
 import pandas as pd
 
 observDF = pd.DataFrame({
@@ -82,18 +66,7 @@ observDF = pd.DataFrame({
 observDF
 ```
 
-Verify for yourself that $Anxiety = Stress + 0.1 \times Time$ holds perfectly in every row. Notice the additional `StressSurvey` column—a survey-based proxy for measuring stress levels without expensive blood tests. The proxy has a *monotonic* (and sorta-kinda *linear*) relationship with actual stress (see @fig-stress-proxy).
-
-:::: {.callout-note}
-## 📝 Methodological Note: The Contrived Nature of This Example
-
-This is a contrived example designed to illustrate the dangers of linear regression:
-
-- **Blood test stress levels** have a perfectly linear relationship with anxiety (by design)
-- **Survey stress responses** have a non-linear relationship with anxiety (also by design)
-
-In the real world, there is no reason to believe linearity holds for either measurement method. This example artificially creates the "perfect" scenario where one measurement is linear and the other is not, to demonstrate how regression can mislead us even when we think we're controlling for the right variables.
-::::
+The dataset is constructed such that the true relationship holds exactly for every observation. 
 
 ```{python}
 #| label: fig-stress-proxy
@@ -117,16 +90,6 @@ plt.show()
 
 ## Analysis Tasks
 
-:::: {.callout-tip}
-## 🎯 The Benchmark: True Coefficients
-
-For every regression you run below, compare your estimated coefficients to these true values:
-
-- $\beta_0 = 0$ (intercept) | $\beta_1 = 1$ (Stress) | $\beta_2 = 0.1$ (Time)
-
-Are your estimates close? If not, your model is telling a wrong story -- even if R-squared is high and p-values are small.
-::::
-
 1. **Bivariate Regression: Anxiety on StressSurvey.** Run a bivariate regression of Anxiety on StressSurvey. What are the estimated coefficients? How do they compare to the true relationship?
 
 
@@ -147,11 +110,11 @@ coef = model.coef_[0]
 print(intercept, coef)
 ```
 
-The regression produces an intercept of -1.524 and a coefficient of 1.047, suggesting a strong positive relationship between StressSurvey and Anxiety.
+The estimated intercept (-1.524) and slope (1.047) suggest a strong positive relationship. However, these estimates deviate meaningfully from the true data-generating process, indicating model misspecification. 
 
 However, these estimates do not match the true model, where anxiety depends on actual stress (coefficient = 1), time (0.1), and has an intercept of zero. Using StressSurvey as a proxy and omitting Time leads to bias, as the coefficient absorbs effects from both non-linearity and the missing variable.
 
-The negative intercept further indicates misspecification. Despite appearing strong, this regression provides a misleading interpretation of the true relationship.
+The negative intercept further indicates misspecification. Despite appearing strong, this regression provides a misleading interpretation of the true relationship. This demonstrates that even a strong statistical relationship can be misleading when the underlying variable is a non-linear proxy.
 
 2. **Visualization: StressSurvey vs Anxiety.** Create a scatter plot with the regression line showing the relationship between StressSurvey and Anxiety. Comment on the fit and any potential issues.
 
@@ -203,7 +166,7 @@ intercept_time, coef_time
 
 The regression of Anxiety on Time yields an intercept of -3.68 and a coefficient of 5.34. While it suggests a strong positive relationship, these estimates do not reflect the true model, where the coefficient on Time is only 0.1 and the intercept is zero.
 
-By omitting Stress, the regression inflates the apparent effect of Time, absorbing variation actually caused by stress. The negative intercept further highlights model misspecification. Thus, this bivariate model gives a misleading picture of social media’s impact on anxiety.
+By omitting Stress, the regression inflates the apparent effect of Time, absorbing variation actually caused by stress. The negative intercept further highlights model misspecification. Thus, this bivariate model gives a misleading picture of social media’s impact on anxiety.Because Time is correlated with Stress, the model incorrectly attributes Stress-driven variation in Anxiety to Time, leading to a severely inflated coefficient
 
 4. **Visualization: Time vs Anxiety.** Create a scatter plot with the regression line showing the relationship between Time and Anxiety. Comment on the fit and any potential issues.
 
@@ -258,7 +221,7 @@ The multiple regression produces an intercept of ~0.59, a StressSurvey coefficie
 
 Although the model appears statistically strong, the results are misleading: StressSurvey overstates the effect of stress, and Time shows a negative effect despite the true relationship being a small positive (0.1). This distortion occurs because StressSurvey is a non-linear proxy for actual stress, causing the regression to misattribute variation between Stress and Time.
 
-Even “controlling for” Time cannot fix the bias introduced by an imperfect proxy, highlighting the danger of blindly trusting regression coefficients.
+Even “controlling for” Time cannot fix the bias introduced by an imperfect proxy, highlighting the danger of blindly trusting regression coefficients. The negative coefficient on Time is especially problematic because it reverses the true positive relationship, demonstrating how a flawed control variable can lead to completely incorrect conclusions.
 
 6. **Multiple Regression: Stress + Time.** Run a multiple regression of Anxiety on both **Stress** and Time. What are the estimated coefficients? How do they compare to the true relationship?
 
@@ -278,11 +241,11 @@ Intercept ≈ 0
 Stress = 1
 Time = 0.1
 
-This shows that using the actual Stress measurement eliminates the bias introduced by the StressSurvey proxy. Both predictors now accurately capture the true effects on Anxiety.
+Using the true Stress variable eliminates bias and accurately recovers the underlying data-generating process.
 
 Key Insight:
 
-“With the correct variable, the regression tells the real story — unlike the misleading StressSurvey model, which distorted the effect of Time and over/underestimated Stress.”
+“With the correct variable, the regression tells the real story, unlike the misleading StressSurvey model, which distorted the effect of Time and over/underestimated Stress.”
 
 7. **Model Comparison.** Compare the R-squared values and coefficient interpretations between the two multiple regression models (Questions 5 and 6). Do both models show statistical significance in all of their coefficient estimates? What does this tell you about the real-world implications of multiple regression results?
 
@@ -292,23 +255,15 @@ Both models have high R² and statistically significant coefficients.
 Model 5 (StressSurvey + Time): StressSurvey is overestimated and Time shows a large negative effect — clearly misleading.
 Model 6 (Stress + Time): Coefficients match the true relationship (Stress = 1, Time = 0.1) — accurate and interpretable.
 
-Takeaway: High R² and small p-values do not guarantee a correct model. Using imperfect proxies or ignoring non-linearities can produce statistically significant but fundamentally wrong conclusions. Analysts must carefully examine variable selection and functional form.
+Both models produce high R² and statistically significant coefficients, yet only one recovers the true relationship. This highlights that statistical significance does not imply correct model specification or causal validity
 
 8. **Real-World Implications.** For each of the two multiple regression models, assume their outputs were published in academic journals and then picked up by the popular press. What headline about time spent on social media and its effect on anxiety would you expect from a press outlet covering the first model? What headline for the second model? Assuming confirmation bias is real, which model is a typical parent going to believe? Which model will Facebook, Instagram, and TikTok executives prefer?
 
-Model 5 (StressSurvey + Time):
-Time coefficient is negative (≈ -2.78), suggesting that more time on social media reduces anxiety.
-Press headline might read:
-“Spending More Time on Social Media Lowers Teen Anxiety, Study Finds”
-Model 6 (Stress + Time):
-Time coefficient is positive (0.1), reflecting the true slight increase in anxiety.
-Press headline might read:
-“More Time on Social Media Slightly Increases Anxiety, Research Shows”
-Interpretation with confirmation bias:
-Typical parents worried about social media are likely to believe Model 5, because it is counterintuitive and sensational.
-Social media executives would prefer Model 5 as well, since it implies their platforms reduce anxiety, making for positive PR.
+Parents concerned about the negative effects of social media are more likely to believe Model 6, as it aligns with their prior beliefs that increased usage raises anxiety.
 
-Takeaway: Mis-specified models can lead to misleading press coverage and influence public perception and corporate interests, even when statistically “significant.”
+In contrast, social media companies would prefer Model 5, since it suggests that increased usage reduces anxiety, supporting a more favorable narrative.
+
+This illustrates how confirmation bias shapes which results are accepted, regardless of model validity.
 
 9. **Avoiding Misleading Statistical Significance.** Reflect on this tip: split the sample into meaningful subsets ("statistical regimes") and use graphical diagnostics for linearity rather than blind reliance on "canned" regressions. Apply this approach to the multiple regression of Anxiety on both StressSurvey and Time by analyzing a smartly chosen subset of the data. What specific subset did you choose and why? Did you get results that are both statistically significant and close to the true relationship?
 
@@ -317,29 +272,25 @@ Takeaway: Mis-specified models can lead to misleading press coverage and influen
 #| echo: false
 import statsmodels.api as sm
 
-# Splitting the data into a 'High Stress' regime (StressSurvey >= 6)
-subset = observDF[observDF['StressSurvey'] >= 6].copy()
+# Splitting the data into a 'High Stress' regime (StressSurvey >= 9)
+subset = observDF[observDF['StressSurvey'] >= 9].copy()
 
-# Defining the predictors and the target
+# Defining predictors and target
 X_sub = sm.add_constant(subset[['StressSurvey', 'Time']])
 y_sub = subset['Anxiety']
 
-# Fitting the model
+# Running multiple regression on subset
 model_sub = sm.OLS(y_sub, X_sub).fit()
 
-# Displaying the results as a clean table
-# This will render a nice table in your Quarto HTML
-model_sub.summary().tables[1]
+# Display results
+model_sub.summary()
 ```
 
-To rescue the analysis from the distortions of the non-linear proxy, I partitioned the data into a High-Stress Regime (where StressSurvey $\ge 9$).
+To address the distortion caused by non-linearity, I focus on a high-stress subset where StressSurvey ≥ 9. In this region, the proxy behaves more linearly relative to actual Stress, reducing the mismatch between the measured and true variable.
 
-Why this subset? 
-If we look at Figure 1, the relationship between Actual Stress and the Survey Response is a curve. However, at the "top end" of the scale (Stress 8 to 12), the survey measurement moves 1-for-1 with actual stress. By focusing on this locally linear regime, we strip away the mathematical "tension" that forced the Time coefficient to turn negative in the full model.
+I then run the same multiple regression (Anxiety on StressSurvey and Time) within this subset. The estimated coefficient on Time becomes positive and moves closer to the true value of 0.1, while the overall interpretation becomes more consistent with the true data-generating process.
 
-The Results:
-In this subset, the coefficient for Time returns to a positive value (~0.15), much closer to the ground truth of 0.1.
+This improvement occurs because restricting the sample reduces non-linear distortions in the proxy variable. In the full dataset, the non-linearity forces the regression to misattribute variation between StressSurvey and Time, even reversing the sign of the Time coefficient. Within the high-stress regime, this distortion is minimized.
 
-The Lesson: 
-Global regressions assume a single "truth" applies to the whole dataset. When dealing with human proxies (like surveys), the relationship often changes across different levels of the variable. Professional analysts should use Scatterplot Smoothing (LOWESS) or Subsample Analysis to ensure their "Control Variables" aren't actually "Corruption Variables."
+This demonstrates that segmenting data into locally linear regimes can produce results that are both statistically meaningful and closer to the true relationship. Rather than relying solely on global regression models, analysts should use graphical diagnostics and subset analysis to ensure that linearity assumptions hold within the data.
 
